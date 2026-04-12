@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Test') {
+        stage('Check Docker') {
             steps {
-                echo 'Jenkins is working!'
+                sh 'docker --version'
             }
         }
     }
