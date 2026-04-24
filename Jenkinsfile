@@ -13,7 +13,17 @@ pipeline {
                 sh 'docker build -t $DOCKER_USER/monitoring-frontend ./frontend'
             }
         }
-
+stage('Docker Login') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-creds',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+        }
+    }
+}
         stage('Push to DockerHub') {
             steps {
                 sh 'docker push $DOCKER_USER/monitoring-backend'
