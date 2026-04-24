@@ -14,7 +14,6 @@ spec:
     spec:
       containers:
         - name: backend
-          image: monitoring-app-devops-backend
-          imagePullPolicy: Never
+          image: ane21/monitoring-backend
           ports:
-            - containerPort: 3000
+            - containerPort: 5000

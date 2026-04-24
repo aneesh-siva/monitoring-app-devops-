@@ -14,7 +14,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: monitoring-app-devops-frontend
-          imagePullPolicy: Never
+          image: ane21/monitoring-frontend
           ports:
             - containerPort: 3000

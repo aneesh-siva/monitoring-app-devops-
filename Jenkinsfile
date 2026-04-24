@@ -1,35 +1,29 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_USER = "ane21"
+    }
+
     stages {
-        stage('Build Backend Image') {
+
+        stage('Build Images') {
             steps {
-                sh 'docker build -t monitoring-backend ./backend'
+                sh 'docker build -t $DOCKER_USER/monitoring-backend ./backend'
+                sh 'docker build -t $DOCKER_USER/monitoring-frontend ./frontend'
             }
         }
 
-        stage('Build Frontend Image') {
+        stage('Push to DockerHub') {
             steps {
-                sh 'docker build -t monitoring-frontend ./frontend'
+                sh 'docker push $DOCKER_USER/monitoring-backend'
+                sh 'docker push $DOCKER_USER/monitoring-frontend'
             }
         }
 
-        stage('Stop Old Containers') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sh 'docker rm -f backend || true'
-                sh 'docker rm -f frontend || true'
-            }
-        }
-
-        stage('Run Backend Container') {
-            steps {
-                sh 'docker run -d -p 5000:5000 --name backend monitoring-backend'
-            }
-        }
-
-        stage('Run Frontend Container') {
-            steps {
-                sh 'docker run -d -p 3000:3000 --name frontend monitoring-frontend'
+                sh 'kubectl apply -f k8s/'
             }
         }
     }

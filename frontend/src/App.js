@@ -6,7 +6,7 @@ function App() {
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get("http://backend-service:3000/logs");
+      const res = await axios.get("http://backend:5000/logs");
       setLogs(res.data);
     } catch (err) {
       console.error(err);
